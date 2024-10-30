@@ -64,7 +64,7 @@ class GameObject:
         self.body_color = body_color
 
     def draw(self):
-        """"
+        """
         Метод пустой.
         Он будет переопределяться в дочерних классах Apple и Snake.
         """
@@ -95,7 +95,7 @@ class Apple(GameObject):
         self.body_color = body_color
 
     def randomize_position(self):
-        """"
+        """
         Метод используется для нахождения
         случайой пустой координаты для отрисовки яблока.
         Возвращает: (X, Y).
@@ -105,7 +105,7 @@ class Apple(GameObject):
         return (apple_x, apple_y)
 
     def draw(self):
-        """"Метод используется для отрисовки яблока."""
+        """Метод используется для отрисовки яблока."""
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
@@ -113,7 +113,7 @@ class Apple(GameObject):
 
 # Описание класса змеи.
 class Snake(GameObject):
-    """"
+    """
     Класс Snake представляет собой змейку
     Атрибуты:
         length: Длина змеи, инициализируется значением 1.
@@ -150,7 +150,7 @@ class Snake(GameObject):
         self.last = None
 
     def update_direction(self):
-        """"
+        """
         Метод используется для записи нового направления змеи вместо текущего.
         """
         if self.next_direction:
@@ -158,7 +158,7 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        """"
+        """
         Метод используется для передвижения змеи,
         переписи её координат, телепортации и для проверки на столкновение.
         """
@@ -187,7 +187,7 @@ class Snake(GameObject):
                 self.positions.pop()
 
     def draw(self):
-        """"
+        """
         Метод используется для отрисовки змеи, головы
         и для затирание последнего сегмента.
         """
@@ -208,14 +208,14 @@ class Snake(GameObject):
 
     # Метод возврата координат головы.
     def get_head_position(self):
-        """"
+        """
         Метод для возврата координаты головы змеи.
         Возвращает: (X, Y).
         """
         return self.positions[0]
 
     def reset(self):
-        """"
+        """
         Метод для перезапуска игры.
         Он очищает экран, сбрасывает length и выбирает случайный direction
         """
@@ -246,9 +246,11 @@ def handle_keys(game_object):
 
 
 def main():
-    """Функция для создания объектов классов Snake и Apple и вечный цикл
+    """
+    Функция для создания объектов классов Snake и Apple и вечный цикл
     работы программы, где вызываются методы классов update_direction(),
-    move(), randomize_position(), apple.draw() и display.update()"""
+    move(), randomize_position(), apple.draw() и display.update()
+    """
     pygame.init()
     s_spawn_point = (GRID_WIDTH // 2 * GRID_SIZE, GRID_HEIGHT // 2 * GRID_SIZE)
     snake = Snake(s_spawn_point, SNAKE_COLOR)
