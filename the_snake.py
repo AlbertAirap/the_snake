@@ -150,9 +150,7 @@ class Snake(GameObject):
         self.last = None
 
     def update_direction(self):
-        """
-        Метод используется для записи нового направления змеи вместо текущего.
-        """
+        """Метод используется для записи нового направления вместо текущего."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
