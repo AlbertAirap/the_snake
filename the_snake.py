@@ -1,3 +1,4 @@
+"""Импорт методов choice и randint из random."""
 from random import choice, randint
 
 import pygame
@@ -41,6 +42,8 @@ clock = pygame.time.Clock()
 
 class GameObject:
     """
+    Родительский ласс GameObject для всех объектов.
+
     Класс GameObject является базовым классом для всех игровых объектов
     в игре. Он предоставляет общие атрибуты и методы,
     которые могут быть использованы и переопределены дочерними классами.
@@ -59,13 +62,15 @@ class GameObject:
 
     position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
 
-    def __init__(self, position, body_color):
+    def __init__(self, position=(0, 0), body_color=(255, 255, 255)):
+        """Метод инициализации любого объекта."""
         self.position = position
         self.body_color = body_color
 
     def draw(self):
         """
         Метод пустой.
+
         Он будет переопределяться в дочерних классах Apple и Snake.
         """
         pass
@@ -90,12 +95,14 @@ class Apple(GameObject):
             цветом.
     """
 
-    def __init__(self, body_color):
+    def __init__(self, body_color=APPLE_COLOR):
+        """Метод инициализации змеи."""
         super().__init__(self.randomize_position(), body_color)
-        self.body_color = body_color
 
     def randomize_position(self):
         """
+        Метод нахождения позиции яблока.
+
         Метод используется для нахождения
         случайой пустой координаты для отрисовки яблока.
         Возвращает: (X, Y).
@@ -114,7 +121,8 @@ class Apple(GameObject):
 # Описание класса змеи.
 class Snake(GameObject):
     """
-    Класс Snake представляет собой змейку
+    Класс Snake представляет собой змейку.
+
     Атрибуты:
         length: Длина змеи, инициализируется значением 1.
         direction (tuple): Направление движения змеи, по умолчанию RIGHT.
@@ -144,7 +152,8 @@ class Snake(GameObject):
     next_direction = None
 
     # Присваивание входных атрибутов класса.
-    def __init__(self, position, body_color):
+    def __init__(self, position=(0, 0), body_color=SNAKE_COLOR):
+        """Метод инициализации змеи."""
         super().__init__(position, body_color)
         self.positions = [(self.position)]
         self.last = None
@@ -157,35 +166,39 @@ class Snake(GameObject):
 
     def move(self):
         """
+        Передвижение змеи.
+
         Метод используется для передвижения змеи,
         переписи её координат, телепортации и для проверки на столкновение.
         """
         old_head = self.get_head_position()
 
         # Телепортация через границу.
-        new_head_X = old_head[0] + self.direction[0] * GRID_SIZE
-        if new_head_X >= SCREEN_WIDTH:
-            new_head_X = 0
-        elif new_head_X < 0:
-            new_head_X = SCREEN_WIDTH - GRID_SIZE
+        new_head_x = old_head[0] + self.direction[0] * GRID_SIZE
+        if new_head_x >= SCREEN_WIDTH:
+            new_head_x = 0
+        elif new_head_x < 0:
+            new_head_x = SCREEN_WIDTH - GRID_SIZE
 
-        new_head_Y = old_head[1] + self.direction[1] * GRID_SIZE
-        if new_head_Y >= SCREEN_HEIGHT:
-            new_head_Y = 0
-        elif new_head_Y < 0:
-            new_head_Y = SCREEN_HEIGHT - GRID_SIZE
+        new_head_y = old_head[1] + self.direction[1] * GRID_SIZE
+        if new_head_y >= SCREEN_HEIGHT:
+            new_head_y = 0
+        elif new_head_y < 0:
+            new_head_y = SCREEN_HEIGHT - GRID_SIZE
 
         # Проверка на столкновение и изменение координат.
-        if (new_head_X, new_head_Y) in self.positions:
+        if (new_head_x, new_head_y) in self.positions:
             self.reset()
         else:
-            self.positions.insert(0, (new_head_X, new_head_Y))
+            self.positions.insert(0, (new_head_x, new_head_y))
             if len(self.positions) > self.length:
                 self.last = self.positions[-1]
                 self.positions.pop()
 
     def draw(self):
         """
+        Рисование змеи.
+
         Метод используется для отрисовки змеи, головы
         и для затирание последнего сегмента.
         """
@@ -208,6 +221,7 @@ class Snake(GameObject):
     def get_head_position(self):
         """
         Метод для возврата координаты головы змеи.
+
         Возвращает: (X, Y).
         """
         return self.positions[0]
@@ -215,6 +229,7 @@ class Snake(GameObject):
     def reset(self):
         """
         Метод для перезапуска игры.
+
         Он очищает экран, сбрасывает length и выбирает случайный direction
         """
         screen.fill(BOARD_BACKGROUND_COLOR)
@@ -226,6 +241,7 @@ class Snake(GameObject):
 def handle_keys(game_object):
     """
     Функция для определения и записи направления движения змеи.
+
     Принимает параметр game_object и меняет его атрибут
     """
     for event in pygame.event.get():
@@ -245,6 +261,8 @@ def handle_keys(game_object):
 
 def main():
     """
+    Главная функция с бескоекчным циклом.
+
     Функция для создания объектов классов Snake и Apple и вечный цикл
     работы программы, где вызываются методы классов update_direction(),
     move(), randomize_position(), apple.draw() и display.update()
